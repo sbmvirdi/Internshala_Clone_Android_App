@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Internshala TA</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">About me</string>
+    <string name="menu_applications">My Applications</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_login">Login/Signup</string>
+    <string name="email_hint">Enter Your Email</string>
+    <string name="pass_hint">Enter Your password</string>
+    <string name="signup">Signup</string>
+    <string name="or">OR</string>
+    <string name="login">Login</string>
+    <string name="card_title">Title</string>
+    <string name="card_subtitle">Subtitle</string>
+    <string name="name_placeholder">{Name}</string>
+    <string name="subtitle_placeholder">{Subtitle}</string>
+    <string name="register">Register</string>
+    <string name="_10_00_pm">10:00 PM</string>
+    <string name="time">Time:</string>
+    <string name="gurugram">Gurugram</string>
+    <string name="location">Location:</string>
+    <string name="_25th_june">25th June</string>
+    <string name="date">Date:</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="cd_for_dw">Placeholder image in Detailed workshop Activity</string>
+    <string name="logout">Logout</string>
+
+</resources>
