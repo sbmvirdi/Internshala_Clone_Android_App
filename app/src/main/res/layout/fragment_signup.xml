@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.Login.Login">
 
 
@@ -47,12 +48,14 @@
         android:id="@+id/passholder"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginTop="5dp"
+        app:passwordToggleEnabled="true"
         android:hint="@string/pass_hint">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:textColor="#000"
             android:id="@+id/pass_signup"
+            android:inputType="textPassword"
             android:fontFamily="@font/overpass_semibold"
             android:layout_height="wrap_content"/>
 
@@ -69,7 +72,7 @@
         android:layout_below="@id/passholder"
         android:layout_marginTop="50dp"
         android:textColor="#fff"
-        android:id="@+id/loginbutton"
+        android:id="@+id/signinbutton"
         android:background="@drawable/button_bg"
         android:layout_centerHorizontal="true"
         />
@@ -82,7 +85,7 @@
         android:layout_marginTop="5dp"
         android:id="@+id/or"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/loginbutton"/>
+        android:layout_below="@id/signinbutton"/>
 
     <TextView
         android:layout_width="wrap_content"

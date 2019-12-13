@@ -24,4 +24,10 @@
         android:label="@string/menu_login"
         tools:layout="@layout/fragment_login" />
 
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.shubamvirdi.internshala.ui.Logout.LogOut"
+        android:label="Logout"
+        tools:layout="@layout/fragment_log_out"/>
+
 </navigation>
