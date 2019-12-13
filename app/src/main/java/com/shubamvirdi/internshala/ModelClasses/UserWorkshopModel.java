@@ -1,5 +1,6 @@
 package com.shubamvirdi.internshala.ModelClasses;
 
+// MODEL CLASS FOR USER WORKSHOP TABLE
 public class UserWorkshopModel {
     private int uid;
     private String email,workshop_name;

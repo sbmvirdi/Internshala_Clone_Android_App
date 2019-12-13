@@ -30,6 +30,7 @@ import java.util.List;
 public class DashboardFragment extends Fragment {
 
 
+    // VARIABLE DECLARATIONS
     private RecyclerView mWorkshopRecyclerView;
     private List<WorkshopModel> mList;
     private WorkshopDatabase mDatabase;
@@ -43,32 +44,26 @@ public class DashboardFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
 
-//
-//        SharedPreferences preferences = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME,Context.MODE_PRIVATE);
-//        String tologin = preferences.getString("login","2");
-//        if (tologin.equals("1")){
-//
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.nav_host_fragment, new Login());
-//                ft.commit();
-//                Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-//                toolbar.setTitle("Login/Signup");
-//        }
+        // ACCESSING SHARED PREFERENCES
+        SharedPreferences preferences = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+        String tologin = preferences.getString("login","2");
 
-//        if (bundle.getString("login")!=null && bundle.getString("login").equals("1")) {
-//            String login = bundle.getString("login");
-//            Toast.makeText(getContext(), ""+login, Toast.LENGTH_SHORT).show();
-//            if (login!=null && login.equals("1")){
-//                FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.nav_host_fragment, new Login());
-//                ft.commit();
-//                Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-//                toolbar.setTitle("Login/Signup");
-//                bundle.putString("login","0");
-//            }
-//
-//        }
+        if (tologin.equals("1")){
+            // IF USER IS NOT LOGGED IN AND COMES FROM DETAILED ACTIVITY AFTER CLICKING REGISTER WORKSHOP
+            // MOVE HIM TO LOGIN FRAGMENT
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.nav_host_fragment, new Login());
+                ft.commit();
+                Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+                toolbar.setTitle("Login/Signup");
+                SharedPreferences.Editor editor = preferences.edit();
+                //CHANGING VALUE OF LOGIN TO 0 THAT MEANS NOT TO MOVE TO LOGIN PAGE
+                editor.putString("login","0");
+                editor.apply();
+        }
 
+
+        // RECYCLER VIEW IMPLEMENTATION
         mWorkshopRecyclerView = root.findViewById(R.id.workshoprecycler);
         mWorkshopRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mWorkshopRecyclerView.setHasFixedSize(true);
@@ -77,11 +72,11 @@ public class DashboardFragment extends Fragment {
         mList = new ArrayList<>();
         mDatabase = new WorkshopDatabase(getContext());
 
-        // Fetching all the workshops available from the database
+        // FETCHING ALL THE WORKSHOPS AVAILABLE
         mList = mDatabase.fetchAllWorkshops();
 
 
-        //setting the adapter for the workshop recycler view
+        //SETTING ADAPTER TO THE RECYCLER VIEW
         WorkshopAdapter adapter = new WorkshopAdapter(mList,getContext());
         mWorkshopRecyclerView.setAdapter(adapter);
 
@@ -95,7 +90,7 @@ public class DashboardFragment extends Fragment {
         SharedPreferences preferences  = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String email = preferences.getString("email","null");
         if (email.equals("null")){
-            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
+            // USER NOT LOGGED IN
             NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
@@ -103,7 +98,7 @@ public class DashboardFragment extends Fragment {
             navigationView.getMenu().getItem(0).setChecked(true);
         }
         else {
-            Toast.makeText(getContext(), "logged in", Toast.LENGTH_SHORT).show();
+            //USER LOGGED IN
             NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);

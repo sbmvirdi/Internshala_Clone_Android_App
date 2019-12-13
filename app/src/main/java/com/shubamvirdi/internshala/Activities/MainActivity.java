@@ -40,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        if (login != null && login.equals("1")){
-//            FragmentTransaction ft = getFragmentManager().beginTransaction();
-//            ft.replace(R.id.nav_host_fragment, new DashboardFragment());
-//            ft.commit();
-//        }
 
         // ID's Initialization
         Toolbar toolbar = findViewById(R.id.toolbar);

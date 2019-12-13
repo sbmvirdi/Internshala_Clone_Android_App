@@ -33,6 +33,7 @@ import com.shubamvirdi.internshala.ui.Signup.SignupFragment;
  */
 public class Login extends Fragment {
 
+    // VARIABLE DECLARATIONS
     private TextView signup;
     private Button mLogin;
     private EditText mEmail,mPass;
@@ -50,15 +51,20 @@ public class Login extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_login, container, false);
 
 
+        // SETTING ID'S
         signup = root.findViewById(R.id.tosignup);
         mLogin = root.findViewById(R.id.loginbutton);
         mEmail = root.findViewById(R.id.email);
         mPass = root.findViewById(R.id.pass);
         mDatabase = new WorkshopDatabase(getContext());
 
+
+        // ONCLICK LISTENER TO SIGNUP TEXT VIEW
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // MOVE THE USER TO SIGNUP FRAGMENT
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, new SignupFragment());
                 ft.commit();
@@ -66,15 +72,18 @@ public class Login extends Fragment {
 
         });
 
+
+        // ACCESSING SHARED PREFERENCES TO WHETHER USER IS LOGGED IN OR NOT
         SharedPreferences preferences  = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String email = preferences.getString("email","null");
         if (email.equals("null")){
-            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
+            // USER NOT LOGGED IN
             NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
             navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
             navigationView.getMenu().getItem(2).setChecked(true);
         }
         else{
+            // USER LOGGED IN
             NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
             navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
             FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -82,6 +91,8 @@ public class Login extends Fragment {
             ft.commit();
         }
 
+
+        //ON CLICK LISTENER FOR THE LOGIN BUTTON
         mLogin.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -90,13 +101,15 @@ public class Login extends Fragment {
                 String pass = mPass.getText().toString().trim();
 
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)){
+                    // VALIDATIONS ON EDIT TEXTS
                     Toast.makeText(getContext(), "Enter all details", Toast.LENGTH_SHORT).show();
 
                 }else{
 
+                    //LOGIN USER
                     long loggedin =  mDatabase.login(email,pass,getContext());
                     if(loggedin == 1){
-                        Toast.makeText(getContext(), "Logged in", Toast.LENGTH_SHORT).show();
+                        // USER LOGGED IN AND MOVE THE USER TO DASHBOARD
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.replace(R.id.nav_host_fragment, new DashboardFragment());
                         ft.commit();
@@ -105,11 +118,11 @@ public class Login extends Fragment {
                         MainActivity mainActivity = (MainActivity) getActivity();
                         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
                         toolbar.setTitle("Dashboard");
-//                        SharedPreferences preferences = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME,Context.MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = preferences.edit();
-//                        editor.putString("login","0");
-//                        editor.apply();
-                    }else if (loggedin == -3){
+
+                    }else if (loggedin == -2){
+                        Toast.makeText(getContext(), "Incorrect email/pass", Toast.LENGTH_SHORT).show();
+                    } else if (loggedin == -3){
+                        // IF USER DOES NOT EXISTS
                         Toast.makeText(getContext(), "User does not exist try signing up", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -120,10 +133,4 @@ public class Login extends Fragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-    }
 }

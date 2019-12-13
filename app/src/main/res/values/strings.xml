@@ -25,9 +25,8 @@
     <string name="subtitle">Subtitle</string>
     <string name="cd_for_dw">Placeholder image in Detailed workshop Activity</string>
     <string name="logout">Logout</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_registrations_yet">No Registrations yet</string>
+    <string name="developed_by">Developed By</string>
+    <string name="developer_name">Shubam Virdi</string>
 
 </resources>

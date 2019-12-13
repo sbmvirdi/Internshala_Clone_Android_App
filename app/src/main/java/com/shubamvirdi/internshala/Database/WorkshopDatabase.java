@@ -16,7 +16,7 @@ import java.util.List;
 
 public class WorkshopDatabase extends SQLiteOpenHelper {
 
-
+    //VARIABLES FOR THE DATABASE
     private static final int DATABASE_VERSION =1;
     private static final String DATABASE_NAME="INTERNSHALA_DB";
     private static final String TABLE_NAME1 = "workshops";
@@ -49,7 +49,7 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
 
 
 
-
+    // CONSTRUCTOR
     public WorkshopDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -57,7 +57,7 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
 
 
 
-
+     //METHODS OF THE OPENHELPER CLASS
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -65,6 +65,7 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
         db.execSQL(TABLE2_QUERY);
         db.execSQL(TABLE3_QUERY);
 
+        // ADDING STATIC WORKSHOPS TO THE DATABASE
         List<WorkshopModel> mInsertList = new ArrayList<>();
 
         mInsertList.add(new WorkshopModel("Sector 55C, Gurugram","9:00 PM","PC Unleashed","Learn the basics of pc parts",1,"25th Dec 2019"));
@@ -85,32 +86,28 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
 
         }
 
-//
-//            ContentValues Values = new ContentValues();
-//            Values.put(TABLE2_COLUMN_2,"shubhamvirdic3@gmail.com");
-//            Values.put(TABLE2_COLUMN_3,"Mekingsbm@123");
-//            long d = db.insert(TABLE_NAME2,null,Values);
-//            Log.e("INSERTED DATA","EMAIL ID,PASSWORD");
-//
-
 
 
     }
 
+    // CALLED UPON UPGRADING THE DATABASE
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        // DROP ALL TABLES
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME1);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME2);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME3);
 
+        // CREATE TABLES FROM SCRATCH
         onCreate(db);
     }
 
+
+    // FUNCTION TO FETCH ALL THE WORKSHOPS AVAILABLE IN THE WORKSHOP TABLE
     public List<WorkshopModel> fetchAllWorkshops(){
         List<WorkshopModel> mList = new ArrayList<>();
         String mSelectQuery = "SELECT * FROM "+TABLE_NAME1;
-        Log.e(WorkshopDatabase.class.getSimpleName(),mSelectQuery);
         SQLiteDatabase db  = this.getReadableDatabase();
         Cursor c = db.rawQuery(mSelectQuery,null);
         if (c.moveToFirst()){
@@ -130,77 +127,90 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
 
         c.close();
 
+        // RETURN THE LIST OF ALL WORKSHOPS
         return mList;
 
     }
 
-    public void CloseDB(){
-
-        SQLiteDatabase db  = this.getReadableDatabase();
-        if (db!=null && db.isOpen()){
-            db.close();
-        }
-    }
 
 
-
+    // FUNCTION TO LOGIN AND CREATE A SESSION IN THE APP
     public long login(String email,String pass,Context mContext) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        // String query = "select email,passkey from "+TABLE_NAME2+"where email = ? and passkey = ?";
         Cursor c = db.rawQuery("select * from " + TABLE_NAME2 + " where email = ? and passkey = ?", new String[]{email, pass});
 
 
-//        Toast.makeText(mContext, ""+c, Toast.LENGTH_SHORT).show();
-
+            // CHECK IF USER ALREADY EXISTS
             boolean isuser = isUser(email);
             if (isuser) {
-                SharedPreferences preferences = mContext.getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("email", email);
-                editor.putString("password", pass);
-                editor.apply();
-                c.close();
-                Log.e("LOGIN","LOGGED IN");
-                return 1;
-            } else {
-                c.close();
-                Log.e("LOGIN","Does not exist");
+                //LOGIN AND SAVE DETAILS IN SHARED PREFERENCES
+
+                if (c.getCount() > 0 && c.moveToFirst()) {
+
+                    String Email = c.getString(1);
+                    String Pass = c.getString(2);
+
+                    if (Email.equals(email) && Pass.equals(pass)) {
+                        SharedPreferences preferences = mContext.getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("password", pass);
+                        editor.apply();
+                        c.close();
+                        return 1;
+                    } else {
+
+                        // INCORRECT EMAIL/PASSWORD
+                        return -2;
+                    }
+
+                } else {
+                    // INCORRECT EMAIL/PASSWORD
+                    c.close();
+                    return -2;
+                }
+
+            }else{
+                //USER DOES NOT EXIST
                 return -3;
             }
 
-            //Toast.makeText(mContext, ""+c.getString(c.getColumnIndex(TABLE2_COLUMN_2)), Toast.LENGTH_SHORT).show();
-//                SharedPreferences preferences = mContext.getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//                SharedPreferences.Editor editor = preferences.edit();
-//                editor.putString("email", email);
-//                editor.putString("password", pass);
-//                editor.apply();
-//                c.close();
-//                return 1;
+
     }
 
+    // FUNCTION TO SIGNUP TO THE DATABASE
     public long signup(String email,String pass,Context mContext){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         if (isUser(email)){
             return -3;
+            // IF USER ALREADY EXISTS DO NOT SIGN UP
         }
+
+        //PUTTING VALUES TO THE DATABASE
         ContentValues mValues = new ContentValues();
         mValues.put(TABLE2_COLUMN_2,email);
         mValues.put(TABLE2_COLUMN_3,pass);
         long status = db.insert(TABLE_NAME2,null,mValues);
         if (status!=-1){
+
+            //SAVING DATA TO SHARED PREFERENCES
             SharedPreferences preferences = mContext.getSharedPreferences(Utils.SHARED_PREF_NAME,Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("email",email);
             editor.putString("password",pass);
             editor.apply();
         }
+
+        // RETURNING THE STATUS OF SIGN UP WHETHER IT IS SUCCESSFUL OR NOT
         return status;
 
     }
 
+
+    //FUNCTION TO CHECK WHETHER USER IS ALREADY IN THE DATABASE IN USERS TABLE
     public boolean isUser(String email){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -208,13 +218,16 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
 
         if (c.getCount()>0 && c.moveToFirst()){
             c.close();
+            // USER EXISTS
             return true;
         }else{
             c.close();
+            //USER DOES NOT EXIST
             return false;
         }
     }
 
+    // FUNCTION TO FETCH ALL THE WORKSHOP OF THE LOGGED IN USER
     public List<WorkshopModel> fetchUserWorkshops(String email){
         List<WorkshopModel> mList = new ArrayList<>();
 
@@ -224,6 +237,7 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
         if (c.moveToFirst()){
 
             do{
+                // ADDING EACH ENTRY TO THE MODEL CLASS
                 WorkshopModel model = new WorkshopModel();
                 model.setUid(c.getInt(c.getColumnIndex(TABLE3_COLUMN_1)));
                 model.setTitle(c.getString(c.getColumnIndex(TABLE3_COLUMN_3)));
@@ -237,28 +251,32 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
         }
 
         c.close();
+        // RETURNING THE LIST OF ALL THE WORKSHOPS
         return mList;
 
     }
 
-
+    // FUNCTION TO CHECK WHETHER THE USER IS ALREADY REGISTER TO THE FOLLOWING WORKSHOP
     public boolean isRegisteredWorkshop(String email,String title){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c =db.rawQuery("select * from "+TABLE_NAME3+" where email = ? and title = ?",new String[]{email,title});
         if (c.getCount()>0 && c.moveToFirst()){
             c.close();
+            // REGISTERED TO THE WORKSHOP
             return true;
         }
         else {
             c.close();
+            //NOT REGISTERED TO THE WORKSHOP
             return false;
         }
 
     }
 
-
+   //FUNCTION TO REGISTER TO THE SPECIFIC WORKSHOP
     public boolean registerWorkshop(String email,WorkshopModel model){
         SQLiteDatabase db = this.getWritableDatabase();
+        //ADDING DATA TO USER WORKSHOP TABLE
         ContentValues values = new ContentValues();
         values.put(TABLE3_COLUMN_2,email);
         values.put(TABLE3_COLUMN_3,model.getTitle());
@@ -269,9 +287,11 @@ public class WorkshopDatabase extends SQLiteOpenHelper {
 
         long insert = db.insert(TABLE_NAME3,null,values);
         if(insert!=-1){
+            //INSERT SUCCESSFUL
             return true;
         }
         else {
+            //INSERT FAILED
             return false;
         }
 

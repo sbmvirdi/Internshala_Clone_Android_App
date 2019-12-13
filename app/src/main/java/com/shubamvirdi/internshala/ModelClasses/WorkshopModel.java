@@ -2,6 +2,7 @@ package com.shubamvirdi.internshala.ModelClasses;
 
 import java.io.Serializable;
 
+// MODEL CLASS FOR THE WORKSHOP TABLE
 public class WorkshopModel implements Serializable {
     private String location,time,title,subtitle,date;
     private int uid;

@@ -23,9 +23,22 @@
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:padding="4dp"
-        android:text="Developed By \n Shubam Virdi"
+        android:text="@string/developed_by"
+        android:id="@+id/developdeby"
         android:textColor="#000"
         android:textSize="20sp"
         app:fontFamily="@font/overpass_semibold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/developdeby"
+        android:text="@string/developer_name"
+        android:textSize="30sp"
+        android:fontFamily="@font/overpass_semibold"
+        android:textColor="#5642E2"
+        />
+
 
 </RelativeLayout>

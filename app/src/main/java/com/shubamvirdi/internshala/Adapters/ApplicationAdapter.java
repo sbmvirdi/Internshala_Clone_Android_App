@@ -14,16 +14,22 @@ import com.shubamvirdi.internshala.R;
 
 import java.util.List;
 
+// ADAPTER FOR THE MY APPLICATIONS FRAGMENT RECYCLER VIEW
+
 public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.MyViewHolder> {
 
+    //DECLARATION OF VARIABLES
     private List<WorkshopModel> mWorkshopModel;
     private Context mContext;
 
+
+    // CONSTRUCTOR
     public ApplicationAdapter(List<WorkshopModel> mWorkshopModel, Context mContext) {
         this.mWorkshopModel = mWorkshopModel;
         this.mContext = mContext;
     }
 
+    // METHODS OF RECYCLER VIEW
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,15 +50,17 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        //DECLARATION OF VARIABLES
         private View mView;
         private WorkshopModel model;
         private TextView title,subtitle,location,time;
 
+        //COSTRUCTOR
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mView  = itemView;
-
+            //SETTING UP ID'S
             title = mView.findViewById(R.id.card_title);
             subtitle = mView.findViewById(R.id.card_subtitle);
             time = mView.findViewById(R.id.time);
@@ -60,6 +68,8 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
 
         }
 
+
+        //SETTING UP DATA TO RECYCLER VIEW CARD VIEW
         private void setData(String title,String subtitle,String location,String time,WorkshopModel mObj){
 
             this.title.setText(title);

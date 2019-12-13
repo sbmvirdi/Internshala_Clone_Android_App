@@ -21,6 +21,7 @@ import com.shubamvirdi.internshala.ui.Dashboard.DashboardFragment;
 import com.shubamvirdi.internshala.ui.Login.Login;
 
 public class DetailedWorkshop extends AppCompatActivity {
+    // DECLARATION OF VARIABLES
     private TextView mTitle,mSubtitle,mDate,mTime,mLocation,mRegisteredText;
     private Button mRegisterWorkshop;
     private WorkshopModel mWorshopModel;
@@ -33,7 +34,8 @@ public class DetailedWorkshop extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_workshop);
 
-        mWorshopModel = new WorkshopModel();
+
+        // DECLARATION OF ID'S
         mTitle = findViewById(R.id.dw_card_title);
         mSubtitle = findViewById(R.id.dw_card_subtitle);
         mDate = findViewById(R.id.dw_startdate);
@@ -42,10 +44,12 @@ public class DetailedWorkshop extends AppCompatActivity {
         mRegisterWorkshop = findViewById(R.id.registerWorkshop);
         mRegisteredText = findViewById(R.id.registeredText);
 
-
+        // INITIALIZING THE OBJECT AND FETCHING THE VALUE USING SERIALIZABLE
+        mWorshopModel = new WorkshopModel();
         mDatabase = new WorkshopDatabase(getApplicationContext());
         mWorshopModel = (WorkshopModel) getIntent().getSerializableExtra("workshopModel");
 
+        // SETTING DATA TO MODEL CLASS USING WORKSHOPMODEL OBJECT
         mTitle.setText(mWorshopModel.getTitle());
         mSubtitle.setText(mWorshopModel.getSubtitle());
         mDate.setText(mWorshopModel.getDate());
@@ -53,47 +57,59 @@ public class DetailedWorkshop extends AppCompatActivity {
         mLocation.setText(mWorshopModel.getLocation());
 
 
+        // USING SHARED PREFERENCES TO DETERMINE WHETHER USER IS LOGGED IN OR NOT
         SharedPreferences preferences  = getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
          email = preferences.getString("email","null");
         if (email.equals("null")){
-            Toast.makeText(getApplicationContext(), "not logged in", Toast.LENGTH_SHORT).show();
+            // USER IS NOT LOGGED IN
             loggedin = false;
         }
         else {
-            Toast.makeText(getApplicationContext(), "logged in", Toast.LENGTH_SHORT).show();
+            // USER IS LOGGED IN
             loggedin = true;
         }
 
+        // FETCHING WHETHER THE USER HAS ALREADY REGISTERED IN THE WORKSHOP
         boolean registered = mDatabase.isRegisteredWorkshop(email,mWorshopModel.getTitle());
 
+        // CHANGING THE BEHAVIOUR OF THE LAYOUT BASED ON LOGIN OR NOT
         if (registered){
             mRegisterWorkshop.setText("Already Registered");
             mRegisterWorkshop.setVisibility(View.GONE);
             mRegisteredText.setVisibility(View.VISIBLE);
         }
 
+        // ON CLICK LISTENER TO THE REGISTER WORKSHOP BUTTON
         mRegisterWorkshop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //IF USER IS LOGGED IN
                 if (loggedin){
+                    // REGISTERING THE WORKSHOP IN USER ACCOUNT
                     boolean register = mDatabase.registerWorkshop(email,mWorshopModel);
                     if (register){
+                        //IF REGISTRATION IS SUCCESSFULL
+                        Toast.makeText(DetailedWorkshop.this, "Successfully Registered", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(DetailedWorkshop.this,MainActivity.class);
                         startActivity(i);
                         finish();
                     }
                     else{
+                        // IF REGISTERATION FAILS
                         Toast.makeText(DetailedWorkshop.this, "failed to register", Toast.LENGTH_SHORT).show();
                     }
+
                 }else{
-//                    Intent i = new Intent(DetailedWorkshop.this,MainActivity.class);
-//                    SharedPreferences preferences  = getSharedPreferences(Utils.SHARED_PREF_NAME,MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = preferences.edit();
-//                    editor.putString("login","1");
-//                    editor.apply();
-//                    startActivity(i);
-//                    finish();
-                    Toast.makeText(DetailedWorkshop.this, "Not Logged in", Toast.LENGTH_SHORT).show();
+
+                    // IF USER IS NOT LOGGED IN AND TRY TO REGISTER TO THE WORKSHOP
+                    Intent i = new Intent(DetailedWorkshop.this,MainActivity.class);
+                    SharedPreferences preferences  = getSharedPreferences(Utils.SHARED_PREF_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("login","1");
+                    editor.apply();
+                    startActivity(i);
+                    finish();
+
 
                 }
 

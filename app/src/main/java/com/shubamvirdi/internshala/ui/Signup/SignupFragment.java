@@ -29,6 +29,7 @@ import org.w3c.dom.Text;
 
 public class SignupFragment extends Fragment {
 
+    // VARIABLE DECLARATION
     private TextView mLogin;
     private EditText mEmail,mPass;
     private Button mSignup;
@@ -46,6 +47,8 @@ public class SignupFragment extends Fragment {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_signup, container, false);
 
+
+        // DEFINING ID'S AND DATABASE INSTANCE
         mLogin = root.findViewById(R.id.tologin);
         mSignup = root.findViewById(R.id.signinbutton);
         mEmail = root.findViewById(R.id.email_signup);
@@ -53,9 +56,11 @@ public class SignupFragment extends Fragment {
         mDatabase = new WorkshopDatabase(getContext());
 
 
+        // ONCLICK LISTENER TO LOGIN TEXTVIEW
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //MOVE THE USER TO LOGIN FRAGMENT
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.nav_host_fragment, new Login());
                 ft.commit();
@@ -63,6 +68,8 @@ public class SignupFragment extends Fragment {
         });
 
 
+
+        //ONCLICK LISTENER TO SIGNUP BUTTON
         mSignup.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -70,15 +77,23 @@ public class SignupFragment extends Fragment {
                 String email = mEmail.getText().toString().trim();
                 String pass = mPass.getText().toString().trim();
                 if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(pass)){
+                    //VALIDATIONS
                     Toast.makeText(getContext(), "Enter all details", Toast.LENGTH_SHORT).show();
                 }
+
+                // SIGNUP THE USER TO THE AND SAVE DETAILS TO THE DATABASE
                 long signup = mDatabase.signup(email,pass,getContext());
                 if (signup == -3){
+                    // USER ALLREADY EXISISTS
                     Toast.makeText(getContext(), "Already registered kindly login ", Toast.LENGTH_SHORT).show();
                 }else if (signup == -1){
+                    // ERROR OCCURRED WHILE INSERTING
                     Toast.makeText(getContext(), "Error while signing up", Toast.LENGTH_SHORT).show();
                 }else {
+                    // SUCCESSFULLY SIGNED UP
                     Toast.makeText(getContext(), "Successfully signed up", Toast.LENGTH_SHORT).show();
+
+                    // MOVING THE USER TO DASHBOARD FRAGMENT
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.nav_host_fragment, new DashboardFragment());
                     ft.commit();

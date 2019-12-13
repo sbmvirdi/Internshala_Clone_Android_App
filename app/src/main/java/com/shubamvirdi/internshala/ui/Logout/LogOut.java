@@ -39,13 +39,16 @@ public class LogOut extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_log_out, container, false);
+
+        //ACCESSING SHARED PREFERENCES TO SET THE DETAILS OF THE USER TO NULL i,e TO TERMINATE SESSION
         SharedPreferences preferences = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email","null");
         editor.putString("password","null");
-        editor.putString("login","0");
+        editor.putString("login","2");
         editor.apply();
-        Toast.makeText(getContext(), "Logged out and cleared SharedPreferences", Toast.LENGTH_SHORT).show();
+
+        // MOVING USER TO DASHBOARD
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.nav_host_fragment, new DashboardFragment());
         ft.commit();

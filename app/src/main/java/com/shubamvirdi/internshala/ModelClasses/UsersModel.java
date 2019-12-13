@@ -1,5 +1,7 @@
 package com.shubamvirdi.internshala.ModelClasses;
 
+
+// MODEL CLASS FOR THE USER DETAILS
 public class UsersModel {
     private int uid;
     private String email,pass;

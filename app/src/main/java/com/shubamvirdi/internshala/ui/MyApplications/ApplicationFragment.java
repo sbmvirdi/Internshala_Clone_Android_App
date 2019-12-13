@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationFragment extends Fragment {
+
+    //VARIABLE DECLARATION
     private RecyclerView mApplicationRecyclerView;
     private WorkshopDatabase mDatabase;
     private TextView mEmpty;
@@ -35,6 +37,7 @@ public class ApplicationFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_my_applications, container, false);
 
+        //SETTING UP ID'S AND SETTING UP RECYCLER VIEW
         mApplicationRecyclerView = root.findViewById(R.id.applicationRecycler);
         mDatabase = new WorkshopDatabase(getContext());
         mEmpty = root.findViewById(R.id.emptyText);
@@ -44,23 +47,26 @@ public class ApplicationFragment extends Fragment {
 
         List<WorkshopModel> mList;
 
-
+        // ACCESSING SHARED PREFERENCES TO CHECK WHETHER WHETHER USER IS LOGGED IN
         SharedPreferences preferences  = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String email = preferences.getString("email","null");
         if (email.equals("null")){
-            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
+
+            // USER NOT LOGGED IN
             mApplicationRecyclerView.setVisibility(View.GONE);
         }
         else {
             mList = new ArrayList<>();
-            Toast.makeText(getContext(), "logged in", Toast.LENGTH_SHORT).show();
+            // USER LOGGED IN
+            // FETCH ALL THE USER REGISTERED WORKSHOPS FROM THE DATABASE
             mList = mDatabase.fetchUserWorkshops(email);
             if (mList.size() == 0){
+                // IF NO WORKSHOP IS REGISTERED
                 mEmpty.setVisibility(View.VISIBLE);
                 mApplicationRecyclerView.setVisibility(View.GONE);
             }
             else {
-
+                // IF SOME WORKSHOPS ARE REGISTERED
                 ApplicationAdapter applicationAdapter = new ApplicationAdapter(mList,getContext());
                 mApplicationRecyclerView.setAdapter(applicationAdapter);
             }
