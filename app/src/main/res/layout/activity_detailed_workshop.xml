@@ -138,6 +138,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already Registered"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:id="@+id/registeredText"
+        />
+
 
 
 </RelativeLayout>

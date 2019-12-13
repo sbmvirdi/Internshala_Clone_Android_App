@@ -66,6 +66,22 @@ public class Login extends Fragment {
 
         });
 
+        SharedPreferences preferences  = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String email = preferences.getString("email","null");
+        if (email.equals("null")){
+            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
+            NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
+            navigationView.getMenu().getItem(2).setChecked(true);
+        }
+        else{
+            NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.nav_host_fragment, new DashboardFragment());
+            ft.commit();
+        }
+
         mLogin.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -89,6 +105,10 @@ public class Login extends Fragment {
                         MainActivity mainActivity = (MainActivity) getActivity();
                         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
                         toolbar.setTitle("Dashboard");
+//                        SharedPreferences preferences = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = preferences.edit();
+//                        editor.putString("login","0");
+//                        editor.apply();
                     }else if (loggedin == -3){
                         Toast.makeText(getContext(), "User does not exist try signing up", Toast.LENGTH_SHORT).show();
                     }
@@ -104,24 +124,6 @@ public class Login extends Fragment {
     public void onStart() {
         super.onStart();
 
-        SharedPreferences preferences  = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String email = preferences.getString("email","null");
-        if (email.equals("null")){
-            Toast.makeText(getContext(), "not logged in", Toast.LENGTH_SHORT).show();
-            NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_app).setVisible(false);
-            navigationView.getMenu().getItem(2).setChecked(true);
-        }
-        else {
-            Toast.makeText(getContext(), "logged in", Toast.LENGTH_SHORT).show();
-            NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-            navigationView.getMenu().findItem(R.id.nav_login).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_logout).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_app).setVisible(true);
-            navigationView.getMenu().getItem(3).setChecked(true);
 
-        }
     }
 }

@@ -21,7 +21,7 @@ import com.shubamvirdi.internshala.ui.Dashboard.DashboardFragment;
 import com.shubamvirdi.internshala.ui.Login.Login;
 
 public class DetailedWorkshop extends AppCompatActivity {
-    private TextView mTitle,mSubtitle,mDate,mTime,mLocation;
+    private TextView mTitle,mSubtitle,mDate,mTime,mLocation,mRegisteredText;
     private Button mRegisterWorkshop;
     private WorkshopModel mWorshopModel;
     private WorkshopDatabase mDatabase;
@@ -40,6 +40,7 @@ public class DetailedWorkshop extends AppCompatActivity {
         mTime = findViewById(R.id.dw_time);
         mLocation = findViewById(R.id.dw_location);
         mRegisterWorkshop = findViewById(R.id.registerWorkshop);
+        mRegisteredText = findViewById(R.id.registeredText);
 
 
         mDatabase = new WorkshopDatabase(getApplicationContext());
@@ -68,6 +69,7 @@ public class DetailedWorkshop extends AppCompatActivity {
         if (registered){
             mRegisterWorkshop.setText("Already Registered");
             mRegisterWorkshop.setVisibility(View.GONE);
+            mRegisteredText.setVisibility(View.VISIBLE);
         }
 
         mRegisterWorkshop.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +86,14 @@ public class DetailedWorkshop extends AppCompatActivity {
                         Toast.makeText(DetailedWorkshop.this, "failed to register", Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Intent i = new Intent(DetailedWorkshop.this,MainActivity.class);
-                    i.putExtra("login","1");
-                    startActivity(i);
-                    finish();
+//                    Intent i = new Intent(DetailedWorkshop.this,MainActivity.class);
+//                    SharedPreferences preferences  = getSharedPreferences(Utils.SHARED_PREF_NAME,MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    editor.putString("login","1");
+//                    editor.apply();
+//                    startActivity(i);
+//                    finish();
+                    Toast.makeText(DetailedWorkshop.this, "Not Logged in", Toast.LENGTH_SHORT).show();
 
                 }
 

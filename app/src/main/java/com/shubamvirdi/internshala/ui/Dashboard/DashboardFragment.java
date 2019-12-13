@@ -43,20 +43,31 @@ public class DashboardFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
 
+//
+//        SharedPreferences preferences = getActivity().getSharedPreferences(Utils.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+//        String tologin = preferences.getString("login","2");
+//        if (tologin.equals("1")){
+//
+//            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.replace(R.id.nav_host_fragment, new Login());
+//                ft.commit();
+//                Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+//                toolbar.setTitle("Login/Signup");
+//        }
 
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle!=null) {
-            String login = bundle.getString("login");
-            Toast.makeText(getContext(), ""+login, Toast.LENGTH_SHORT).show();
-            if (login!=null && login.equals("1")){
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.nav_host_fragment, new Login());
-                ft.commit();
-                Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-                toolbar.setTitle("Login/Signup");
-            }
-
-        }
+//        if (bundle.getString("login")!=null && bundle.getString("login").equals("1")) {
+//            String login = bundle.getString("login");
+//            Toast.makeText(getContext(), ""+login, Toast.LENGTH_SHORT).show();
+//            if (login!=null && login.equals("1")){
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.replace(R.id.nav_host_fragment, new Login());
+//                ft.commit();
+//                Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+//                toolbar.setTitle("Login/Signup");
+//                bundle.putString("login","0");
+//            }
+//
+//        }
 
         mWorkshopRecyclerView = root.findViewById(R.id.workshoprecycler);
         mWorkshopRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

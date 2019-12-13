@@ -3,8 +3,11 @@ package com.shubamvirdi.internshala.ui.Logout;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -30,6 +33,7 @@ public class LogOut extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class LogOut extends Fragment {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("email","null");
         editor.putString("password","null");
+        editor.putString("login","0");
         editor.apply();
         Toast.makeText(getContext(), "Logged out and cleared SharedPreferences", Toast.LENGTH_SHORT).show();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -46,6 +51,8 @@ public class LogOut extends Fragment {
         ft.commit();
         NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Dashboard");
 
 
         return root;
