@@ -76,7 +76,7 @@ public class SignupFragment extends Fragment {
             public void onClick(View v) {
                 String email = mEmail.getText().toString().trim();
                 String pass = mPass.getText().toString().trim();
-                if (!TextUtils.isEmpty(email) || !TextUtils.isEmpty(pass)){
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)){
                     //VALIDATIONS
                     Toast.makeText(getContext(), "Enter all details", Toast.LENGTH_SHORT).show();
                 }
