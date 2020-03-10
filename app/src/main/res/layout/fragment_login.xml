@@ -71,7 +71,7 @@
         android:fontFamily="@font/overpass_semibold"
         android:layout_below="@id/passholder"
         android:layout_marginTop="50dp"
-        android:textColor="#fff"
+        android:textColor="@color/design_default_color_primary"
         android:id="@+id/loginbutton"
         android:background="@drawable/button_bg"
         android:layout_centerHorizontal="true"
