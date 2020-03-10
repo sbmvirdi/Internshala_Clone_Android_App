@@ -2,6 +2,8 @@ package com.shubamvirdi.internshala.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.shubamvirdi.internshala.Activities.DetailedWorkshop;
 import com.shubamvirdi.internshala.ModelClasses.WorkshopModel;
 import com.shubamvirdi.internshala.R;
+import com.shubamvirdi.internshala.Utils.Utils;
 
 import java.util.List;
+import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
-    // ADAPTER FOR THE DASHBOARD FRAGMENT FOR ALL AVAILABLE WORKSHOPS
+// ADAPTER FOR THE DASHBOARD FRAGMENT FOR ALL AVAILABLE WORKSHOPS
 public class WorkshopAdapter extends RecyclerView.Adapter<WorkshopAdapter.myViewHolder>{
 
     // VARIABLES
@@ -59,7 +65,8 @@ public class WorkshopAdapter extends RecyclerView.Adapter<WorkshopAdapter.myView
         // VARIABLE DECLARATION
         private View mView;
         private WorkshopModel model;
-        private TextView title,subtitle,location,time;
+         private CircleImageView RankImage;
+        private TextView title,subtitle,location,time,Rank;
 
         //CONSTRUCTOR OF THE VIEW HOLDER CLASS
          myViewHolder(@NonNull View itemView) {
@@ -72,6 +79,8 @@ public class WorkshopAdapter extends RecyclerView.Adapter<WorkshopAdapter.myView
             subtitle = mView.findViewById(R.id.card_subtitle);
             time = mView.findViewById(R.id.time);
             location = mView.findViewById(R.id.location);
+             Rank = mView.findViewById(R.id.rankValue);
+             RankImage = mView.findViewById(R.id.rankImage);
             model = new WorkshopModel();
 
             // ONCLICK LISTENER FOR EACH WORKSHOP CARD VIEW
@@ -80,6 +89,8 @@ public class WorkshopAdapter extends RecyclerView.Adapter<WorkshopAdapter.myView
                 public void onClick(View v) {
                     Intent i = new Intent(mContext, DetailedWorkshop.class);
                     i.putExtra("workshopModel",model);
+                    i.putExtra("applications",false);
+                    i.putExtra("rank",getAdapterPosition()+1);
                     mContext.startActivity(i);
                 }
             });
@@ -96,6 +107,11 @@ public class WorkshopAdapter extends RecyclerView.Adapter<WorkshopAdapter.myView
             this.location.setText(location);
             this.time.setText(time);
             model = mObj;
+            int val  = new Random().nextInt(Utils.Colors.length);
+            GradientDrawable drawable  = (GradientDrawable) RankImage.getBackground();
+            drawable.setColor(Color.parseColor(Utils.Colors[val]));
+            Rank.setText("#"+(getAdapterPosition()+1));
+            this.title.setTextColor(Color.parseColor(Utils.Colors[val]));
         }
     }
 }

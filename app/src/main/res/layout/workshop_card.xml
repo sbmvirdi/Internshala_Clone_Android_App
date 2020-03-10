@@ -8,6 +8,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
+        android:paddingBottom="10dp"
+        android:background="?android:attr/selectableItemBackground"
         android:layout_height="wrap_content">
 
     <TextView
@@ -15,12 +17,32 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/overpass_semibold"
         android:text="@string/card_title"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="50dp"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:layout_height="wrap_content"
         android:id="@+id/card_title"
         />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rank_bg"
+            android:layout_marginStart="5dp"
+            android:id="@+id/rankImage"
+            />
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/rankValue"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="#1"
+            android:textSize="18sp"
+            android:fontFamily="@font/overpass"
+            android:textColor="#fff"
+            android:gravity="center"
+            />
 
     <TextView
         android:layout_width="match_parent"
@@ -28,14 +50,16 @@
         android:text="Subtitle"
         android:id="@+id/card_subtitle"
         android:textSize="15sp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="50dp"
         android:fontFamily="@font/overpass_semibold"
         android:layout_below="@id/card_title"
-        android:layout_marginStart="10dp" />
+        android:layout_marginStart="50dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date:"
+            android:textStyle="bold"
+            android:textSize="16sp"
             android:layout_marginTop="40dp"
             android:layout_below="@id/card_subtitle"
             android:layout_marginLeft="10dp"
@@ -47,36 +71,47 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:text="25th June"
+            android:textSize="16sp"
+            android:fontFamily="@font/overpass"
             android:layout_toRightOf="@id/startdateLabel"
             android:layout_below="@id/card_subtitle"
             android:layout_marginTop="40dp"
             android:id="@+id/startdate"/>
 
         <TextView
+            android:id="@+id/locationLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location:"
             android:layout_below="@id/startdateLabel"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:id="@+id/locationLabel"
-            android:layout_marginStart="10dp" />
+            android:paddingTop="5dp"
+            android:text="Location:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/startdateLabel"
             android:layout_below="@id/startdateLabel"
-            android:text="Gurugram"
-            android:layout_marginLeft="40dp"
-            android:id="@+id/location"
             android:layout_marginStart="40dp"
-            android:layout_toEndOf="@id/startdateLabel" />
+            android:layout_marginLeft="40dp"
+            android:layout_toEndOf="@id/startdateLabel"
+            android:layout_toRightOf="@id/startdateLabel"
+            android:fontFamily="@font/overpass"
+            android:paddingTop="5dp"
+            android:text="Gurugram"
+            android:textSize="16sp" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Time:"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingTop="5dp"
             android:layout_below="@id/location"
             android:layout_marginLeft="10dp"
             android:id="@+id/timeLabel"
@@ -87,6 +122,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/startdateLabel"
             android:layout_below="@id/location"
+            android:textSize="16sp"
+            android:paddingTop="5dp"
+            android:fontFamily="@font/overpass"
             android:layout_marginLeft="40dp"
             android:text="10:00 PM"
             android:id="@+id/time"/>

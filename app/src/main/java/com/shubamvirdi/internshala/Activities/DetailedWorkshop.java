@@ -6,6 +6,8 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,10 @@ import com.shubamvirdi.internshala.Utils.Utils;
 import com.shubamvirdi.internshala.ui.Dashboard.DashboardFragment;
 import com.shubamvirdi.internshala.ui.Login.Login;
 
+import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class DetailedWorkshop extends AppCompatActivity {
     // DECLARATION OF VARIABLES
     private TextView mTitle,mSubtitle,mDate,mTime,mLocation,mRegisteredText;
@@ -27,7 +33,11 @@ public class DetailedWorkshop extends AppCompatActivity {
     private WorkshopModel mWorshopModel;
     private WorkshopDatabase mDatabase;
     private boolean loggedin = false;
+    private boolean application;
+    private CircleImageView mRankImage;
+    private TextView mRank;
     private String email;
+    private int Rank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +53,15 @@ public class DetailedWorkshop extends AppCompatActivity {
         mLocation = findViewById(R.id.dw_location);
         mRegisterWorkshop = findViewById(R.id.registerWorkshop);
         mRegisteredText = findViewById(R.id.registeredText);
+        mRankImage = findViewById(R.id.rankImage);
+        mRank= findViewById(R.id.rankValue);
 
         // INITIALIZING THE OBJECT AND FETCHING THE VALUE USING SERIALIZABLE
         mWorshopModel = new WorkshopModel();
         mDatabase = new WorkshopDatabase(getApplicationContext());
         mWorshopModel = (WorkshopModel) getIntent().getSerializableExtra("workshopModel");
+        application = getIntent().getBooleanExtra("applications",false);
+        Rank = getIntent().getIntExtra("rank",1);
 
         // SETTING DATA TO MODEL CLASS USING WORKSHOPMODEL OBJECT
         mTitle.setText(mWorshopModel.getTitle());
@@ -77,6 +91,10 @@ public class DetailedWorkshop extends AppCompatActivity {
             mRegisterWorkshop.setText("Already Registered");
             mRegisterWorkshop.setVisibility(View.GONE);
             mRegisteredText.setVisibility(View.VISIBLE);
+        }
+
+        if (application){
+            mRegisteredText.setVisibility(View.GONE);
         }
 
         // ON CLICK LISTENER TO THE REGISTER WORKSHOP BUTTON
@@ -117,6 +135,13 @@ public class DetailedWorkshop extends AppCompatActivity {
         });
 
 
+        //SETTING UP RANK AND RANK IMAGE
+
+        int val =new Random().nextInt(Utils.Colors.length);
+        GradientDrawable drawable = (GradientDrawable) mRankImage.getBackground();
+        drawable.setColor(Color.parseColor(Utils.Colors[val]));
+        mRank.setText("#"+Rank);
+        mTitle.setTextColor(Color.parseColor(Utils.Colors[val]));
 
 
     }

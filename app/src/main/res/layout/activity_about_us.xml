@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.AboutUs">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/developer"
